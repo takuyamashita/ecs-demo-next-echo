@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./environment/local/nginx/conf.d:/etc/nginx/templates
+
+  next:
+    image: node:20-alpine
+    volumes:
+      - ./src/next:/app
+    working_dir: /app
+    tty: true
+    environment:
+      - API_ENDPOINT=http://echo:1323
+  
+  echo:
+    image: golang:1.21-alpine
+    volumes:
+      - ./src/echo:/app
+    working_dir: /app
+    tty: true
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+
+  aws:
+    image: amazon/aws-cli
+    volumes:
+      - ./.aws:/root/.aws
+    tty: true
+    stdin_open: true
+    entrypoint: /bin/sh
+
+  terraform:
+    image: hashicorp/terraform:1.7
+    volumes:
+      - ./.aws:/root/.aws
+      - ./environment/aws:/app
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    entrypoint: /bin/sh
