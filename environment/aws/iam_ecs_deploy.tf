@@ -1,6 +1,6 @@
 resource "aws_iam_role" "ecs_deploy" {
   name_prefix = "ecs-deploy-"
-  
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [

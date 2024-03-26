@@ -2,8 +2,8 @@
 #
 ###############################################
 resource "aws_subnet" "alb_1a" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 0)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 0)
   availability_zone = "ap-northeast-1a"
 
   tags = {
@@ -17,8 +17,8 @@ resource "aws_route_table_association" "alb_1a" {
 }
 
 resource "aws_subnet" "alb_1c" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 1)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 1)
   availability_zone = "ap-northeast-1c"
 
   tags = {
@@ -35,8 +35,8 @@ resource "aws_route_table_association" "alb_1c" {
 #
 ###############################################
 resource "aws_subnet" "web_application_1a" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
   availability_zone = "ap-northeast-1a"
 
   tags = {
@@ -50,8 +50,8 @@ resource "aws_route_table_association" "web_application_1a" {
 }
 
 resource "aws_subnet" "web_application_1c" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 3)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 3)
   availability_zone = "ap-northeast-1c"
 
   tags = {
@@ -69,8 +69,8 @@ resource "aws_route_table_association" "web_application_1c" {
 #
 ###############################################
 resource "aws_subnet" "database_1a" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 4)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 4)
   availability_zone = "ap-northeast-1a"
 
   tags = {
@@ -84,8 +84,8 @@ resource "aws_route_table_association" "database_1a" {
 }
 
 resource "aws_subnet" "database_1c" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 5)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 5)
   availability_zone = "ap-northeast-1c"
 
   tags = {
@@ -102,8 +102,8 @@ resource "aws_route_table_association" "database_1c" {
 #
 ###############################################
 resource "aws_subnet" "endpoint_1a" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 20)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 20)
   availability_zone = "ap-northeast-1a"
 
   tags = {
@@ -117,8 +117,8 @@ resource "aws_route_table_association" "endpoint_1a" {
 }
 
 resource "aws_subnet" "endpoint_1c" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 21)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 21)
   availability_zone = "ap-northeast-1c"
 
   tags = {
@@ -135,8 +135,8 @@ resource "aws_route_table_association" "endpoint_1c" {
 #
 ###############################################
 resource "aws_subnet" "management_1a" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 10)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 10)
   availability_zone = "ap-northeast-1a"
 
   tags = {
@@ -150,8 +150,8 @@ resource "aws_route_table_association" "management_1a" {
 }
 
 resource "aws_subnet" "management_1c" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 11)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 11)
   availability_zone = "ap-northeast-1c"
 
   tags = {

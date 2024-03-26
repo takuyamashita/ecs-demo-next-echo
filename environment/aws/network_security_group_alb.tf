@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb" {
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
   name_prefix = "alb-"
 
   tags = {
@@ -26,19 +26,19 @@ resource "aws_security_group_rule" "alb_ingress_80" {
 }
 
 resource "aws_security_group_rule" "alb_egress_next" {
-  security_group_id = aws_security_group.alb.id
-  type              = "egress"
-  from_port         = 3000
-  to_port           = 3000
-  protocol          = "tcp"
+  security_group_id        = aws_security_group.alb.id
+  type                     = "egress"
+  from_port                = 3000
+  to_port                  = 3000
+  protocol                 = "tcp"
   source_security_group_id = aws_security_group.next.id
 }
 
 resource "aws_security_group_rule" "alb_egress_echo" {
-  security_group_id = aws_security_group.alb.id
-  type              = "egress"
-  from_port         = 1323
-  to_port           = 1323
-  protocol          = "tcp"
+  security_group_id        = aws_security_group.alb.id
+  type                     = "egress"
+  from_port                = 1323
+  to_port                  = 1323
+  protocol                 = "tcp"
   source_security_group_id = aws_security_group.echo.id
 }

@@ -1,5 +1,5 @@
 resource "aws_security_group" "endpoint" {
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
   name_prefix = "endpoint-"
 
   tags = {

@@ -8,7 +8,7 @@ resource "aws_route_table" "alb_1a" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main.id
   }
-  
+
   tags = {
     Name = "alb_1a"
   }
@@ -21,7 +21,7 @@ resource "aws_route_table" "alb_1c" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main.id
   }
-  
+
   tags = {
     Name = "alb_1c"
   }
