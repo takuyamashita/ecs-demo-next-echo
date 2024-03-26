@@ -4,7 +4,7 @@ resource "aws_vpc_endpoint" "cloudwatch_logs" {
   vpc_endpoint_type = "Interface"
   private_dns_enabled = true
   security_group_ids = [aws_security_group.endpoint.id]
-  subnet_ids = [aws_subnet.web_application_1a.id, aws_subnet.web_application_1c.id]
+  subnet_ids = [aws_subnet.endpoint_1a.id, aws_subnet.endpoint_1c.id]
   
   tags = {
     Name = "cloudwatch_logs"
@@ -17,7 +17,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_endpoint_type = "Interface"
   private_dns_enabled = true
   security_group_ids = [aws_security_group.endpoint.id]
-  subnet_ids = [aws_subnet.web_application_1a.id, aws_subnet.web_application_1c.id]
+  subnet_ids = [aws_subnet.endpoint_1a.id, aws_subnet.endpoint_1c.id]
   tags = {
     Name = "ecr_dkr"
   }
@@ -29,7 +29,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   vpc_endpoint_type = "Interface"
   private_dns_enabled = true
   security_group_ids = [aws_security_group.endpoint.id]
-  subnet_ids = [aws_subnet.web_application_1a.id, aws_subnet.web_application_1c.id]
+  subnet_ids = [aws_subnet.endpoint_1a.id, aws_subnet.endpoint_1c.id]
   tags = {
     Name = "ecr_api"
   }

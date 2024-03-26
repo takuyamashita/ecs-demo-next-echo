@@ -15,11 +15,13 @@ resource "aws_iam_role" "next" {
   })
 }
 
+/*
 resource "aws_iam_role_policy" "next" {
-  name_prefix = "next"
+  name_prefix = "next-"
   role = aws_iam_role.next.name
 
   policy = data.aws_iam_policy_document.next.json
 }
 
 data "aws_iam_policy_document" "next" {}
+*/
