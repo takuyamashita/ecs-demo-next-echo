@@ -1,4 +1,3 @@
-import { redirect } from 'next/dist/server/api-utils'
 import { cookies } from 'next/headers'
 
 async function getUser() {
@@ -10,10 +9,7 @@ async function getUser() {
     },
     cache: 'no-store',
   })
-  if (response.ok) {
-    return response.json()
-  } else {
-  }
+  return response.json()
 }
 
 export default async function Page() {
