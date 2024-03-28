@@ -56,7 +56,9 @@ resource "aws_ecs_service" "next" {
   launch_type      = "FARGATE"
   platform_version = "LATEST"
 
-  deployment_minimum_healthy_percent = 0
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
 
   network_configuration {
     subnets          = [aws_subnet.web_application_1a.id, aws_subnet.web_application_1c.id]
@@ -65,7 +67,7 @@ resource "aws_ecs_service" "next" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.next.arn
+    target_group_arn = aws_lb_target_group.next_1.arn
     container_name   = "next"
     container_port   = 3000
   }

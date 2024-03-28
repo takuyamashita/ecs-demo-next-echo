@@ -14,7 +14,34 @@ resource "aws_lb" "alb" {
   }
 }
 
-resource "aws_lb_target_group" "next" {
+resource "aws_lb_target_group" "next_1" {
+  name_prefix = "next-"
+  port        = 3000
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = aws_vpc.main.id
+
+  health_check {
+    path                = "/"
+    port                = 3000
+    protocol            = "HTTP"
+    timeout             = 5
+    interval            = 10
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Name = "next"
+  }
+
+}
+
+resource "aws_lb_target_group" "next_2" {
   name_prefix = "next-"
   port        = 3000
   protocol    = "HTTP"
@@ -48,6 +75,6 @@ resource "aws_lb_listener" "alb_next" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.next.arn
+    target_group_arn = aws_lb_target_group.next_1.arn
   }
 }
