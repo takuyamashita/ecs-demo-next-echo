@@ -10,6 +10,8 @@ resource "aws_ecs_task_definition" "next" {
   execution_role_arn = aws_iam_role.ecs_task_execution.arn
   task_role_arn      = aws_iam_role.next.arn
 
+  track_latest = true
+
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
@@ -72,4 +74,7 @@ resource "aws_ecs_service" "next" {
     container_port   = 3000
   }
 
+  lifecycle {
+    ignore_changes = [ desired_count, platform_version, load_balancer, task_definition]
+  }
 }
