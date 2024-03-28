@@ -23,8 +23,14 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:takuyamashita/ecs-demo-next-echo:ref:refs/heads/main"]
+      values   = ["repo:takuyamashita/ecs-demo-next-echo:environment:PRODUCTION"]
     }
+
+    #condition {
+    #  test     = "StringEquals"
+    #  variable = "token.actions.githubusercontent.com:sub"
+    #  values   = ["repo:takuyamashita/ecs-demo-next-echo:ref:refs/heads/main"]
+    #}
 
     #condition {
     #  test     = "StringLike"
