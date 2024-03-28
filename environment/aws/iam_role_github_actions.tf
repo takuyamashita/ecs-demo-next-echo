@@ -1,5 +1,5 @@
 resource "aws_iam_role" "github_actions" {
-  name_prefix = "github-actions-"
+  name_prefix        = "github-actions-"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
 }
 
@@ -38,4 +38,27 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
     #  values   = ["repo:takuyamashita/ecs-demo-next-echo:*"]
     #}
   }
+}
+
+resource "aws_iam_role_policy" "github_actions_use_push_image" {
+  name_prefix = "github-actions-"
+  role        = aws_iam_role.github_actions.name
+
+  policy = data.aws_iam_policy_document.github_actions_push_image.json
+}
+
+data "aws_iam_policy_document" "github_actions_push_image" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:CompleteLayerUpload",
+      "ecr:GetAuthorizationToken",
+      "ecr:UploadLayerPart",
+      "ecr:InitiateLayerUpload",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:PutImage",
+    ]
+    resources = ["*"]
+  }
+
 }

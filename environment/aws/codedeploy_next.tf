@@ -1,6 +1,6 @@
 resource "aws_codedeploy_app" "next" {
   compute_platform = "ECS"
-  name = "next"
+  name             = "next"
 }
 
 resource "aws_codedeploy_deployment_group" "next" {
