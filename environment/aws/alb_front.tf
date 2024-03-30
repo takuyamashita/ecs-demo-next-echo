@@ -1,16 +1,16 @@
-resource "aws_lb" "alb" {
-  name_prefix                      = "alb-"
+resource "aws_lb" "alb_front" {
+  name_prefix                      = "front-"
   internal                         = false
   load_balancer_type               = "application"
-  security_groups                  = [aws_security_group.alb.id]
-  subnets                          = [aws_subnet.alb_1a.id, aws_subnet.alb_1c.id]
+  security_groups                  = [aws_security_group.alb_front.id]
+  subnets                          = [aws_subnet.alb_front_1a.id, aws_subnet.alb_front_1c.id]
   enable_deletion_protection       = false
   enable_http2                     = true
   enable_cross_zone_load_balancing = true
   idle_timeout                     = 60
 
   tags = {
-    Name = "alb"
+    Name = "alb-front"
   }
 }
 
@@ -69,7 +69,7 @@ resource "aws_lb_target_group" "next_2" {
 }
 
 resource "aws_lb_listener" "alb_next" {
-  load_balancer_arn = aws_lb.alb.arn
+  load_balancer_arn = aws_lb.alb_front.arn
   port              = 80
   protocol          = "HTTP"
 

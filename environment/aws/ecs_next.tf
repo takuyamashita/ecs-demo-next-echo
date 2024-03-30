@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "next" {
   cpu    = 512
   memory = 1024
 
-  execution_role_arn = aws_iam_role.ecs_task_execution.arn
+  execution_role_arn = aws_iam_role.ecs_next_task_execution.arn
   task_role_arn      = aws_iam_role.next.arn
 
   track_latest = true
@@ -23,6 +23,12 @@ resource "aws_ecs_task_definition" "next" {
       name      = "next"
       image     = "${aws_ecr_repository.next.repository_url}:v1"
       essential = true
+      environment = [
+        {
+          name  = "API_ENDPOINT"
+          value = "http://${aws_lb.alb_echo.dns_name}:80"
+        }
+      ]
       portMappings = [
         {
           name          = "http"
@@ -63,7 +69,7 @@ resource "aws_ecs_service" "next" {
   }
 
   network_configuration {
-    subnets          = [aws_subnet.web_application_1a.id, aws_subnet.web_application_1c.id]
+    subnets          = [aws_subnet.next_1a.id, aws_subnet.next_1c.id]
     security_groups  = [aws_security_group.next.id]
     assign_public_ip = false
   }

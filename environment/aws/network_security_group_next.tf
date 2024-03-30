@@ -7,13 +7,13 @@ resource "aws_security_group" "next" {
   }
 }
 
-resource "aws_security_group_rule" "next_ingress_alb" {
+resource "aws_security_group_rule" "next_ingress_alb_front" {
   security_group_id        = aws_security_group.next.id
   type                     = "ingress"
   from_port                = 3000
   to_port                  = 3000
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.alb.id
+  source_security_group_id = aws_security_group.alb_front.id
 }
 
 resource "aws_security_group_rule" "next_egress_echo" {

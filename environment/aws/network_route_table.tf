@@ -1,7 +1,7 @@
 ###############################################
 #
 ###############################################
-resource "aws_route_table" "alb_1a" {
+resource "aws_route_table" "alb_front_1a" {
   vpc_id = aws_vpc.main.id
 
   route {
@@ -10,11 +10,11 @@ resource "aws_route_table" "alb_1a" {
   }
 
   tags = {
-    Name = "alb_1a"
+    Name = "alb_front_1a"
   }
 }
 
-resource "aws_route_table" "alb_1c" {
+resource "aws_route_table" "alb_front_1c" {
   vpc_id = aws_vpc.main.id
 
   route {
@@ -23,26 +23,64 @@ resource "aws_route_table" "alb_1c" {
   }
 
   tags = {
-    Name = "alb_1c"
+    Name = "alb_front_1c"
   }
 }
 
 ###############################################
 #
 ###############################################
-resource "aws_route_table" "web_application_1a" {
+resource "aws_route_table" "alb_echo_1a" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "web_application_1a"
+    Name = "alb_echo_1a"
   }
 }
 
-resource "aws_route_table" "web_application_1c" {
+resource "aws_route_table" "alb_echo_1c" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "web_application_1c"
+    Name = "alb_echo_1c"
+  }
+}
+
+###############################################
+#
+###############################################
+resource "aws_route_table" "next_1a" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "next_1a"
+  }
+}
+
+resource "aws_route_table" "next_1c" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "next_1c"
+  }
+}
+
+###############################################
+#
+###############################################
+resource "aws_route_table" "echo_1a" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "echo_1a"
+  }
+}
+
+resource "aws_route_table" "echo_1c" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "echo_1c"
   }
 }
 
