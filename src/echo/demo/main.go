@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -25,11 +26,11 @@ type jwtClaims struct {
 func main() {
 
 	mysqlConfig := mysql.Config{
-		User:                 "app",
-		Passwd:               "app",
+		User:                 envVar.DBUser,
+		Passwd:               envVar.DBPassword,
 		Net:                  "tcp",
-		Addr:                 "db:3306",
-		DBName:               "app",
+		Addr:                 fmt.Sprintf("%s:%d", envVar.DBHost, envVar.DBPort),
+		DBName:               envVar.DBName,
 		AllowNativePasswords: true,
 		ParseTime:            true,
 	}

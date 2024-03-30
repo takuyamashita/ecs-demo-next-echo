@@ -24,6 +24,12 @@ services:
       - ./src/echo:/app
     working_dir: /app
     tty: true
+    environment:
+      - DB_USER=app
+      - DB_PASSWORD=app
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=app
 
   db:
     image: mysql:8.0
