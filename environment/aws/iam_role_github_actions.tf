@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 }
 
 resource "aws_iam_role_policy" "github_actions_use_push_image" {
-  name_prefix = "github-actions-"
+  name_prefix = "github-actions-use-push-image-"
   role        = aws_iam_role.github_actions.name
 
   policy = data.aws_iam_policy_document.github_actions_push_image.json
@@ -61,4 +61,23 @@ data "aws_iam_policy_document" "github_actions_push_image" {
     resources = ["*"]
   }
 
+}
+
+resource "aws_iam_role_policy" "github_actions_use_ssm" {
+  name_prefix = "github-actions-use-ssm-"
+  role        = aws_iam_role.github_actions.name
+
+  policy = data.aws_iam_policy_document.github_actions_use_ssm.json
+}
+
+data "aws_iam_policy_document" "github_actions_use_ssm" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:GetParametersByPath",
+    ]
+    resources = ["*"]
+  }
 }

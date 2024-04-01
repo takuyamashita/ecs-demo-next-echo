@@ -33,6 +33,11 @@ jobs:
         with:
           aws-region: ${{ secrets.AWS_REGION }} 
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+      
+      - name: Get the Amazon Repository URI
+        id: get-repository-uri
+        run: |
+          echo "::set-output name=repository_uri::$(aws ssm get-parameter --name /next/ecr }} --query 'Parameter.Value' --output text)"
 
       - name: Login to Amazon ECR
         id: login-ecr

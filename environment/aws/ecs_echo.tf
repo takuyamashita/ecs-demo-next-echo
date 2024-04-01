@@ -25,11 +25,11 @@ resource "aws_ecs_task_definition" "echo" {
       secrets = [
         {
           name      = "DB_USER"
-          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username"
+          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
         },
         {
           name      = "DB_PASSWORD"
-          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password"
+          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
         },
       ]
       environment = [
