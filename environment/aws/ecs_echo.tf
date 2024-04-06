@@ -1,4 +1,3 @@
-/*
 resource "aws_ecs_task_definition" "echo" {
   family = "echo"
 
@@ -80,7 +79,7 @@ resource "aws_ecs_task_definition" "echo" {
   #    }
   #  ])
 }
-*/
+
 
 resource "aws_ecs_cluster" "echo" {
   name = "echo"
@@ -88,9 +87,9 @@ resource "aws_ecs_cluster" "echo" {
 }
 
 resource "aws_ecs_service" "echo" {
-  name             = "echo"
-  cluster          = aws_ecs_cluster.echo.id
-  #task_definition  = aws_ecs_task_definition.echo.arn
+  name    = "echo"
+  cluster = aws_ecs_cluster.echo.id
+  task_definition  = aws_ecs_task_definition.echo.arn
   desired_count    = 1
   launch_type      = "FARGATE"
   platform_version = "LATEST"

@@ -1,10 +1,10 @@
 async function getData() {
   try {
-    const response = await fetch(`${process.env.API_ENDPOINT}`, { cache: 'no-store' })
+    const response = await fetch(`${process.env.API_ENDPOINT}`, {
+      cache: 'no-store',
+    })
     return response.json()
   } catch (error) {
-    console.log(process.env)
-    console.log(error)
     return { message: 'Error fetching data' }
   }
 }
@@ -13,6 +13,11 @@ export const dynamic = 'force-dynamic'
 
 export default async function Post() {
   const data = await getData()
+
+  const array = []
+  for (let i = 0; i < 1000000000; i++) {
+    array.push(i)
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">

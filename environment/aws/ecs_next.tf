@@ -1,4 +1,3 @@
-/*
 resource "aws_ecs_task_definition" "next" {
   family = "next"
 
@@ -58,7 +57,6 @@ resource "aws_ecs_task_definition" "next" {
   #    }
   #  ])
 }
-*/
 
 resource "aws_ecs_cluster" "next" {
   name = "next"
@@ -66,9 +64,9 @@ resource "aws_ecs_cluster" "next" {
 }
 
 resource "aws_ecs_service" "next" {
-  name             = "next"
-  cluster          = aws_ecs_cluster.next.id
-  #task_definition  = aws_ecs_task_definition.next.arn
+  name    = "next"
+  cluster = aws_ecs_cluster.next.id
+  task_definition  = aws_ecs_task_definition.next.arn
   desired_count    = 1
   launch_type      = "FARGATE"
   platform_version = "LATEST"
