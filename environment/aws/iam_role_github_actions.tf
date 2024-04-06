@@ -103,6 +103,8 @@ data "aws_iam_policy_document" "github_actions_deploy" {
       "codedeploy:GetDeployment",
       "codedeploy:GetDeploymentConfig",
       "codedeploy:GetDeploymentGroup",
+      "codedeploy:GetDeploymentTarget",
+      "codedeploy:RegisterApplicationRevision",
       "iam:PassRole",
     ]
     resources = ["*"]
