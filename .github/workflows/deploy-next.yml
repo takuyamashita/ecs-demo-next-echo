@@ -13,11 +13,11 @@ permissions:
 
 env:
   ECR_REPOSITORY: next
-  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
+  ECS_SERVICE: next
+  ECS_CLUSTER: next
   ECS_TASK_DEFINITION: environment/aws/ecs_next_task_definition.json
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: next           # set this to the name of the container in the
+  CODEDEPLOY_APPSPEC: environment/aws/code_deploy_next_appspec.yml
+  CONTAINER_NAME: next
 
 jobs:
   deploy-production:
@@ -59,9 +59,7 @@ jobs:
       - name: environment value from ssm parameter store
         id: get-ssm-parameter
         run: |
-          aws ssm get-parameter --name /echo/api_endpoint --query 'Parameter.Value' --output text
-          aws ssm get-parameter --name /next/log_group_name --query 'Parameter.Value' --output text
-          echo "API_ENDPOINT='$(aws ssm get-parameter --name /echo/api_endpoint --query 'Parameter.Value' --output text)'" >> $GITHUB_ENV
+          echo "API_ENDPOINT=$(aws ssm get-parameter --name /echo/api_endpoint --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
           echo "LOG_GROUP_NAME=$(aws ssm get-parameter --name /next/log_group_name --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
 
       - name: Fill in the new image ID in the Amazon ECS task definition
@@ -75,13 +73,16 @@ jobs:
             API_ENDPOINT=${{ steps.get-ssm-parameter.outputs.API_ENDPOINT }}
           log-configuration-options: |
             awslogs-group=${{ steps.get-ssm-parameter.outputs.LOG_GROUP_NAME }}
-      
-      - run: cat ${{ steps.task-def.outputs.task-definition }}
 
-#      - name: Deploy Amazon ECS task definition
-#        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
-#        with:
-#          task-definition: ${{ steps.task-def.outputs.task-definition }}
-#          service: ${{ env.ECS_SERVICE }}
-#          cluster: ${{ env.ECS_CLUSTER }}
-#          wait-for-service-stability: true
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+
+          codedeploy-appspec: ${{ env.CODEDEPLOY_APPSPEC }}
+          codedeploy-application: next
+          codedeploy-deployment-group: next 
+
+          wait-for-service-stability: true
