@@ -1,6 +1,11 @@
 async function getData() {
-  const response = await fetch(`${process.env.API_ENDPOINT}`, { cache: 'no-store' })
-  return response.json()
+  try {
+    const response = await fetch(`${process.env.API_ENDPOINT}`, { cache: 'no-store' })
+    return response.json()
+  } catch (error) {
+    console.error(error)
+    return { message: 'Error fetching data' }
+  }
 }
 
 export const dynamic = 'force-dynamic'
