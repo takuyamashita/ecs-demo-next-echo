@@ -78,6 +78,10 @@ resource "aws_ecs_task_definition" "echo" {
   #      }
   #    }
   #  ])
+
+  lifecycle {
+    ignore_changes = ["family", "network_mode", "requires_compatibilities", "cpu", "memory", "execution_role_arn", "task_role_arn", "container_definitions", "tags",]
+  }
 }
 
 

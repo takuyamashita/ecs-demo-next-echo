@@ -34,23 +34,6 @@ resource "aws_appautoscaling_policy" "next" {
           stat = "Average"
         }
       }
-
-      metrics {
-        id          = "memory"
-        return_data = false
-        metric_stat {
-          metric {
-            namespace   = "AWS/ECS"
-            metric_name = "MemoryUtilization"
-            dimensions {
-              name  = "ServiceName"
-              value = aws_ecs_service.next.name
-            }
-          }
-          stat = "Average"
-        }
-      }
-
     }
 
   }
