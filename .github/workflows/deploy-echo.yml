@@ -1,4 +1,4 @@
-name: Deploy Next.js
+name: Deploy Echo
 
 on:
   push:
@@ -12,12 +12,12 @@ permissions:
   contents: read
 
 env:
-  ECR_REPOSITORY: next
-  ECS_SERVICE: next
-  ECS_CLUSTER: next
-  ECS_TASK_DEFINITION: environment/aws/ecs_next_task_definition.json
-  CODEDEPLOY_APPSPEC: environment/aws/code_deploy_next_appspec.yml
-  CONTAINER_NAME: next
+  ECR_REPOSITORY: echo
+  ECS_SERVICE: echo
+  ECS_CLUSTER: echo
+  ECS_TASK_DEFINITION: environment/aws/ecs_echo_task_definition.json
+  CODEDEPLOY_APPSPEC: environment/aws/code_deploy_echo_appspec.yml
+  CONTAINER_NAME: echo
 
 jobs:
   deploy-production:
@@ -36,7 +36,7 @@ jobs:
       - name: Get the Amazon Repository URI
         id: get-repository-uri
         run: |
-          echo "::set-output name=repository_uri::$(aws ssm get-parameter --name /next/ecr --query 'Parameter.Value' --output text)"
+          echo "::set-output name=repository_uri::$(aws ssm get-parameter --name /echo/ecr --query 'Parameter.Value' --output text)"
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -51,7 +51,7 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -f ./environment/docker/next/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -f ./environment/docker/echo/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -59,16 +59,22 @@ jobs:
       - name: environment value from ssm parameter store
         id: get-ssm-parameter
         run: |
-          echo "API_ENDPOINT=$(aws ssm get-parameter --name /echo/api_endpoint --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
-          echo "LOG_GROUP_NAME=$(aws ssm get-parameter --name /next/log_group_name --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
-          echo "execution_role_arn=$(aws ssm get-parameter --name /next/execution_role_arn --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
-          echo "task_role_arn=$(aws ssm get-parameter --name /next/task_role_arn --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "DB_HOST=$(aws ssm get-parameter --name /db/host --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "DB_NAME=$(aws ssm get-parameter --name /db/name --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "DB_PORT=$(aws ssm get-parameter --name /db/port --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "DB_USER=$(aws ssm get-parameter --name /db/user --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "DB_PASSWORD=$(aws ssm get-parameter --name /db/password --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "LOG_GROUP_NAME=$(aws ssm get-parameter --name /echo/log_group_name --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "execution_role_arn=$(aws ssm get-parameter --name /echo/execution_role_arn --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "task_role_arn=$(aws ssm get-parameter --name /echo/task_role_arn --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
       
       - name: Fill in the new image ID in the Amazon ECS task definition
         run: |
           sed -i \
               -e 's|${execution_role_arn}|${{ steps.get-ssm-parameter.outputs.execution_role_arn }}|g' \
               -e 's|${task_role_arn}|${{ steps.get-ssm-parameter.outputs.task_role_arn }}|g' \
+              -e 's|${db_user}|${{ steps.get-ssm-parameter.outputs.DB_USER }}|g' \
+              -e 's|${db_password}|${{ steps.get-ssm-parameter.outputs.DB_PASSWORD }}|g' \
               ${{ env.ECS_TASK_DEFINITION }}
 
       - run: cat ${{ env.ECS_TASK_DEFINITION }}
@@ -81,7 +87,9 @@ jobs:
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
           environment-variables: |
-            API_ENDPOINT=${{ steps.get-ssm-parameter.outputs.API_ENDPOINT }}
+            DB_HOST=${{ steps.get-ssm-parameter.outputs.DB_HOST }}
+            DB_NAME=${{ steps.get-ssm-parameter.outputs.DB_NAME }}
+            DB_PORT=${{ steps.get-ssm-parameter.outputs.DB_PORT }}
           log-configuration-options: |
             awslogs-group=${{ steps.get-ssm-parameter.outputs.LOG_GROUP_NAME }}
 
@@ -93,7 +101,7 @@ jobs:
           cluster: ${{ env.ECS_CLUSTER }}
 
           codedeploy-appspec: ${{ env.CODEDEPLOY_APPSPEC }}
-          codedeploy-application: next
-          codedeploy-deployment-group: next 
+          codedeploy-application: echo
+          codedeploy-deployment-group: echo
 
           wait-for-service-stability: true

@@ -1,4 +1,18 @@
 {
+
+    "family": "echo",
+    "networkMode": "awsvpc",
+    "cpu": "512",
+    "memory": "1024",
+    "executionRoleArn": "${execution_role_arn}",
+    "taskRoleArn": "${task_role_arn}",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "runtimePlatform": {
+        "operatingSystemFamily": "LINUX",
+        "cpuArchitecture": "X86_64"
+    },
     "containerDefinitions": [
         {
             "name": "echo",

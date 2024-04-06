@@ -25,6 +25,8 @@ resource "aws_ecs_task_definition" "echo" {
     db_port        = "3306"
     db_name        = aws_db_instance.main.db_name
     log_group_name = aws_cloudwatch_log_group.echo.name
+    execution_role_arn = aws_iam_role.ecs_echo_task_execution.arn
+    task_role_arn      = aws_iam_role.echo.arn
   })).containerDefinitions)
 
   #  container_definitions = jsonencode([
