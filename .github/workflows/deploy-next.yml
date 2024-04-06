@@ -68,7 +68,8 @@ jobs:
         run: |
           sed -i \
               -e 's/${execution_role_arn}/${{ steps.giet-ssm-parameter.outputs.execution_role_arn }}/g' \
-              -e 's/${task_role_arn}/${{ steps.giet-ssm-parameter.outputs.task_role_arn }}/g'
+              -e 's/${task_role_arn}/${{ steps.giet-ssm-parameter.outputs.task_role_arn }}/g' \
+              ${{ env.ECS_TASK_DEFINITION }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
