@@ -3,7 +3,8 @@ async function getData() {
     const response = await fetch(`${process.env.API_ENDPOINT}`, { cache: 'no-store' })
     return response.json()
   } catch (error) {
-    console.error(error)
+    console.log(process.env.API_ENDPOINT)
+    console.log(error)
     return { message: 'Error fetching data' }
   }
 }
