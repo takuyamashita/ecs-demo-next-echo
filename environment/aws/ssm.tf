@@ -59,7 +59,7 @@ resource "aws_ssm_parameter" "next_log_group_name" {
 }
 
 resource "aws_ssm_parameter" "next_task_execution_role_arn" {
-  name  = "/next/task_execution_role_arn"
+  name  = "/next/execution_role_arn"
   type  = "String"
   value = aws_iam_role.ecs_next_task_execution.arn
 }
