@@ -1,6 +1,6 @@
 resource "aws_lb" "alb_echo" {
   name_prefix                      = "echo-"
-  internal                         = false
+  internal                         = true
   load_balancer_type               = "application"
   security_groups                  = [aws_security_group.alb_echo.id]
   subnets                          = [aws_subnet.alb_echo_1a.id, aws_subnet.alb_echo_1c.id]
