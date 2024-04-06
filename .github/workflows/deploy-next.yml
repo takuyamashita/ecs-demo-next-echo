@@ -71,7 +71,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
           environment-variables: |
             API_ENDPOINT=${{ steps.get-ssm-parameter.outputs.API_ENDPOINT }}
-          log-configration-options: |
+          log-configuration-options: |
             awslogs-group=${{ steps.get-ssm-parameter.outputs.LOG_GROUP_NAME }}
       
       - run: cat ${{ steps.task-def.outputs.task-definition }}
