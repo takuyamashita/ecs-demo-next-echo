@@ -9,3 +9,52 @@ resource "aws_ssm_parameter" "ecr_echo" {
   type  = "String"
   value = aws_ecr_repository.echo.repository_url
 }
+
+resource "aws_ssm_parameter" "db_user" {
+  name  = "/db/user"
+  type  = "String"
+  value = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
+}
+
+resource "aws_ssm_parameter" "db_password" {
+  name  = "/db/password"
+  type  = "String"
+  value = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
+}
+
+resource "aws_ssm_parameter" "db_host" {
+  name  = "/db/host"
+  type  = "String"
+  value = aws_db_instance.main.address
+}
+
+resource "aws_ssm_parameter" "db_port" {
+  name  = "/db/port"
+  type  = "String"
+  value = "3306"
+}
+
+resource "aws_ssm_parameter" "db_name" {
+  name  = "/db/name"
+  type  = "String"
+  value = aws_db_instance.main.db_name
+}
+
+resource "aws_ssm_parameter" "echo_log_group_name" {
+  name  = "/echo/log_group_name"
+  type  = "String"
+  value = aws_cloudwatch_log_group.echo.name
+}
+
+resource "aws_ssm_parameter" "echo_api_endpoint" {
+  name  = "/echo/api_endpoint"
+  type  = "String"
+  value = "http://${aws_lb.alb_echo.dns_name}:${aws_lb_listener.alb_echo.port}"
+}
+
+resource "aws_ssm_parameter" "next_log_group_name" {
+  name  = "/next/log_group_name"
+  type  = "String"
+  value = aws_cloudwatch_log_group.next.name
+}
+

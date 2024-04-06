@@ -17,38 +17,44 @@ resource "aws_ecs_task_definition" "next" {
     cpu_architecture        = "X86_64"
   }
 
+  container_definitions = templatefile("./ecs_next_task_definition.json", {
+    name           = "next"
+    image          = "${aws_ecr_repository.next.repository_url}:v1"
+    api_endpoint   = "http://${aws_lb.alb_echo.dns_name}:80"
+    log_group_name = aws_cloudwatch_log_group.next.name
+  })
 
-  container_definitions = jsonencode([
-    {
-      name      = "next"
-      image     = "${aws_ecr_repository.next.repository_url}:v1"
-      essential = true
-      environment = [
-        {
-          name  = "API_ENDPOINT"
-          value = "http://${aws_lb.alb_echo.dns_name}:80"
-        }
-      ]
-      portMappings = [
-        {
-          name          = "http"
-          protocol      = "tcp"
-          appProtocol   = "http"
-          containerPort = 3000
-          hostPort      = 3000
-        }
-      ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-create-group"  = "true"
-          "awslogs-group"         = "${aws_cloudwatch_log_group.next.name}"
-          "awslogs-region"        = "ap-northeast-1"
-          "awslogs-stream-prefix" = "ecs"
-        }
-      }
-    }
-  ])
+  #  container_definitions = jsonencode([
+  #    {
+  #      name      = "next"
+  #      image     = "${aws_ecr_repository.next.repository_url}:v1"
+  #      essential = true
+  #      environment = [
+  #        {
+  #          name  = "API_ENDPOINT"
+  #          value = "http://${aws_lb.alb_echo.dns_name}:80"
+  #        }
+  #      ]
+  #      portMappings = [
+  #        {
+  #          name          = "http"
+  #          protocol      = "tcp"
+  #          appProtocol   = "http"
+  #          containerPort = 3000
+  #          hostPort      = 3000
+  #        }
+  #      ]
+  #      logConfiguration = {
+  #        logDriver = "awslogs"
+  #        options = {
+  #          "awslogs-create-group"  = "true"
+  #          "awslogs-group"         = "${aws_cloudwatch_log_group.next.name}"
+  #          "awslogs-region"        = "ap-northeast-1"
+  #          "awslogs-stream-prefix" = "ecs"
+  #        }
+  #      }
+  #    }
+  #  ])
 }
 
 resource "aws_ecs_cluster" "next" {

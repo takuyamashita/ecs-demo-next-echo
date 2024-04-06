@@ -1,0 +1,49 @@
+[
+    {
+        "name": "${name}",
+        "image": "${image}",
+        "essential": true,
+        "secrets": [
+            {
+                "name": "DB_USER",
+                "valueFrom": "${db_user}"
+            },
+            {
+                "name": "DB_PASSWORD",
+                "valueFrom": "${db_password}"
+            }
+        ],
+        "environment": [
+            {
+                "name": "DB_HOST",
+                "value": "${db_host}"
+            },
+            {
+                "name": "DB_PORT",
+                "value": "3306"
+            },
+            {
+                "name": "DB_NAME",
+                "value": "${db_name}"
+            }
+        ],
+        "portMappings": [
+            {
+                "name": "http",
+                "protocol": "tcp",
+                "appProtocol": "http",
+                "containerPort": 1323,
+                "hostPort": 1323
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-create-group": "true",
+                "awslogs-group": "${log_group_name}",
+                "awslogs-region": "ap-northeast-1",
+                "awslogs-stream-prefix": "ecs"
+            }
+        }
+    }
+]

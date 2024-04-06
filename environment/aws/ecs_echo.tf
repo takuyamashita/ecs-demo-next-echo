@@ -17,55 +17,66 @@ resource "aws_ecs_task_definition" "echo" {
     cpu_architecture        = "X86_64"
   }
 
-  container_definitions = jsonencode([
-    {
-      name      = "echo"
-      image     = "${aws_ecr_repository.echo.repository_url}:v1"
-      essential = true
-      secrets = [
-        {
-          name      = "DB_USER"
-          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
-        },
-        {
-          name      = "DB_PASSWORD"
-          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
-        },
-      ]
-      environment = [
-        {
-          name  = "DB_HOST"
-          value = aws_db_instance.main.address
-        },
-        {
-          name  = "DB_PORT"
-          value = "3306"
-        },
-        {
-          name  = "DB_NAME"
-          value = aws_db_instance.main.db_name
-        },
-      ]
-      portMappings = [
-        {
-          name          = "http"
-          protocol      = "tcp"
-          appProtocol   = "http"
-          containerPort = 1323
-          hostPort      = 1323
-        }
-      ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-create-group"  = "true"
-          "awslogs-group"         = "${aws_cloudwatch_log_group.echo.name}"
-          "awslogs-region"        = "ap-northeast-1"
-          "awslogs-stream-prefix" = "ecs"
-        }
-      }
-    }
-  ])
+  container_definitions = templatefile("./ecs_echo_task_definition.json", {
+    name           = "echo"
+    image          = "${aws_ecr_repository.echo.repository_url}:v1"
+    db_user        = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
+    db_password    = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
+    db_host        = aws_db_instance.main.address
+    db_port        = "3306"
+    db_name        = aws_db_instance.main.db_name
+    log_group_name = aws_cloudwatch_log_group.echo.name
+  })
+
+  #  container_definitions = jsonencode([
+  #    {
+  #      name      = "echo"
+  #      image     = "${aws_ecr_repository.echo.repository_url}:v1"
+  #      essential = true
+  #      secrets = [
+  #        {
+  #          name      = "DB_USER"
+  #          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
+  #        },
+  #        {
+  #          name      = "DB_PASSWORD"
+  #          valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
+  #        },
+  #      ]
+  #      environment = [
+  #        {
+  #          name  = "DB_HOST"
+  #          value = aws_db_instance.main.address
+  #        },
+  #        {
+  #          name  = "DB_PORT"
+  #          value = "3306"
+  #        },
+  #        {
+  #          name  = "DB_NAME"
+  #          value = aws_db_instance.main.db_name
+  #        },
+  #      ]
+  #      portMappings = [
+  #        {
+  #          name          = "http"
+  #          protocol      = "tcp"
+  #          appProtocol   = "http"
+  #          containerPort = 1323
+  #          hostPort      = 1323
+  #        }
+  #      ]
+  #      logConfiguration = {
+  #        logDriver = "awslogs"
+  #        options = {
+  #          "awslogs-create-group"  = "true"
+  #          "awslogs-group"         = "${aws_cloudwatch_log_group.echo.name}"
+  #          "awslogs-region"        = "ap-northeast-1"
+  #          "awslogs-stream-prefix" = "ecs"
+  #        }
+  #      }
+  #    }
+  #  ])
 }
 
 resource "aws_ecs_cluster" "echo" {

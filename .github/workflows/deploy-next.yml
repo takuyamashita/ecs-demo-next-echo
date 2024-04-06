@@ -16,9 +16,9 @@ env:
   ECR_REPOSITORY: next
   ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
   ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: environment/aws/ecs_next_task_definition.json
                                                # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
+  CONTAINER_NAME: next           # set this to the name of the container in the
 
 jobs:
   deploy-production:
@@ -37,7 +37,7 @@ jobs:
       - name: Get the Amazon Repository URI
         id: get-repository-uri
         run: |
-          echo "::set-output name=repository_uri::$(aws ssm get-parameter --name /next/ecr }} --query 'Parameter.Value' --output text)"
+          echo "::set-output name=repository_uri::$(aws ssm get-parameter --name /next/ecr --query 'Parameter.Value' --output text)"
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -55,3 +55,32 @@ jobs:
           docker build -f ./environment/docker/next/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      
+      - name: environment value from ssm parameter store
+        id: get-ssm-parameter
+        run: |
+          echo "::set-output name=API_ENDPOINT::$(aws ssm get-parameter --name /echo/api-endpoint --query 'Parameter.Value' --output text)"
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+          environment-variables: |
+            {
+              "name": "API_ENDPOINT",
+              "value": ${{ secrets.API_ENDPOINT }}
+            } 
+      
+      - run: echo ${{ steps.task-def.outputs.task-definition }}
+
+#      - name: Deploy Amazon ECS task definition
+#        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+#        with:
+#          task-definition: ${{ steps.task-def.outputs.task-definition }}
+#          service: ${{ env.ECS_SERVICE }}
+#          cluster: ${{ env.ECS_CLUSTER }}
+#          wait-for-service-stability: true
