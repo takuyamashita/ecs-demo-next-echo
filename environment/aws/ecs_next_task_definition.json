@@ -1,4 +1,5 @@
 {
+    "family": "next",
     "containerDefinitions": [
         {
             "name": "next",
