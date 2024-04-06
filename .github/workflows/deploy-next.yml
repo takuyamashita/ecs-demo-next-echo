@@ -63,6 +63,8 @@ jobs:
           echo "LOG_GROUP_NAME=$(aws ssm get-parameter --name /next/log_group_name --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
       
       - run: |
+          echo "API_ENDPOINT=$(aws ssm get-parameter --name /echo/api_endpoint --query 'Parameter.Value' --output text)"
+          echo "LOG_GROUP_NAME=$(aws ssm get-parameter --name /next/log_group_name --query 'Parameter.Value' --output text)"
           echo "API_ENDPOINT=${{ steps.get-ssm-parameter.outputs.API_ENDPOINT }}"
           echo "LOG_GROUP_NAME=${{ steps.get-ssm-parameter.outputs.LOG_GROUP_NAME }}"
 
