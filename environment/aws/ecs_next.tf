@@ -18,9 +18,9 @@ resource "aws_ecs_task_definition" "next" {
   }
 
   container_definitions = jsonencode(jsondecode(templatefile("./ecs_next_task_definition.json", {
-    image          = "${aws_ecr_repository.next.repository_url}:v1"
-    api_endpoint   = "http://${aws_lb.alb_echo.dns_name}:80"
-    log_group_name = aws_cloudwatch_log_group.next.name
+    image              = "${aws_ecr_repository.next.repository_url}:v1"
+    api_endpoint       = "http://${aws_lb.alb_echo.dns_name}:80"
+    log_group_name     = aws_cloudwatch_log_group.next.name
     execution_role_arn = aws_iam_role.ecs_next_task_execution.arn
     task_role_arn      = aws_iam_role.next.arn
   })).containerDefinitions)
@@ -64,8 +64,8 @@ resource "aws_ecs_cluster" "next" {
 }
 
 resource "aws_ecs_service" "next" {
-  name    = "next"
-  cluster = aws_ecs_cluster.next.id
+  name             = "next"
+  cluster          = aws_ecs_cluster.next.id
   task_definition  = aws_ecs_task_definition.next.arn
   desired_count    = 1
   launch_type      = "FARGATE"

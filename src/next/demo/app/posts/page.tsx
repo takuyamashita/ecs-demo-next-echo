@@ -15,7 +15,7 @@ export default async function Post() {
   const data = await getData()
 
   const array = []
-  for (let i = 0; i < 1000000000; i++) {
+  for (let i = 0; i < 10000; i++) {
     array.push(i)
   }
 

@@ -18,13 +18,13 @@ resource "aws_ecs_task_definition" "echo" {
   }
 
   container_definitions = jsonencode(jsondecode(templatefile("./ecs_echo_task_definition.json", {
-    image          = "${aws_ecr_repository.echo.repository_url}:v1"
-    db_user        = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
-    db_password    = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
-    db_host        = aws_db_instance.main.address
-    db_port        = "3306"
-    db_name        = aws_db_instance.main.db_name
-    log_group_name = aws_cloudwatch_log_group.echo.name
+    image              = "${aws_ecr_repository.echo.repository_url}:v1"
+    db_user            = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
+    db_password        = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
+    db_host            = aws_db_instance.main.address
+    db_port            = "3306"
+    db_name            = aws_db_instance.main.db_name
+    log_group_name     = aws_cloudwatch_log_group.echo.name
     execution_role_arn = aws_iam_role.ecs_echo_task_execution.arn
     task_role_arn      = aws_iam_role.echo.arn
   })).containerDefinitions)
@@ -87,8 +87,8 @@ resource "aws_ecs_cluster" "echo" {
 }
 
 resource "aws_ecs_service" "echo" {
-  name    = "echo"
-  cluster = aws_ecs_cluster.echo.id
+  name             = "echo"
+  cluster          = aws_ecs_cluster.echo.id
   task_definition  = aws_ecs_task_definition.echo.arn
   desired_count    = 1
   launch_type      = "FARGATE"
