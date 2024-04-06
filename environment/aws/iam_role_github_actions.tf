@@ -81,3 +81,28 @@ data "aws_iam_policy_document" "github_actions_use_ssm" {
     resources = ["*"]
   }
 }
+
+resource "aws_iam_role_policy" "github_actions_use_deploy" {
+  name_prefix = "github-actions-use-deploy-"
+  role        = aws_iam_role.github_actions.name
+
+  policy = data.aws_iam_policy_document.github_actions_deploy.json
+}
+
+data "aws_iam_policy_document" "github_actions_deploy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecs:RegisterTaskDefinition",
+      "codedeploy:CreateDeployment",
+      "codedeploy:GetApplication",
+      "codedeploy:GetApplicationRevision",
+      "codedeploy:GetDeployment",
+      "codedeploy:GetDeploymentConfig",
+      "codedeploy:GetDeploymentGroup",
+      "iam:PassRole",
+    ]
+    resources = ["*"]
+  }
+
+}
