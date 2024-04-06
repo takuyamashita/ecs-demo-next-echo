@@ -1,3 +1,4 @@
+/*
 resource "aws_ecs_task_definition" "next" {
   family = "next"
 
@@ -57,6 +58,7 @@ resource "aws_ecs_task_definition" "next" {
   #    }
   #  ])
 }
+*/
 
 resource "aws_ecs_cluster" "next" {
   name = "next"
