@@ -4,7 +4,6 @@ resource "aws_appautoscaling_target" "next" {
   resource_id        = "service/${aws_ecs_cluster.next.name}/${aws_ecs_service.next.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
-  role_arn           = aws_iam_role.autoscaling.arn
 }
 
 resource "aws_appautoscaling_policy" "next" {
