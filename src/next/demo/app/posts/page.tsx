@@ -3,6 +3,8 @@ async function getData() {
   return response.json()
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function Post() {
   const data = await getData()
 
