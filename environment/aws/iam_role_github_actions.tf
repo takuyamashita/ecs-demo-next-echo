@@ -94,6 +94,9 @@ data "aws_iam_policy_document" "github_actions_deploy" {
     effect = "Allow"
     actions = [
       "ecs:RegisterTaskDefinition",
+      "ecs:UpdateService",
+      "ecs:DescribeServices",
+      "ecs:DescribeTaskDefinition",
       "codedeploy:CreateDeployment",
       "codedeploy:GetApplication",
       "codedeploy:GetApplicationRevision",

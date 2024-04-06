@@ -8,6 +8,10 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
+    "runtimePlatform": {
+        "operatingSystemFamily": "LINUX",
+        "cpuArchitecture": "X86_64"
+    },
 
     "containerDefinitions": [
         {
