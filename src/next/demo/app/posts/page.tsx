@@ -1,9 +1,7 @@
 async function getData() {
-  const response = await fetch('http://echo:1323', { cache: 'no-store' })
+  const response = await fetch(`${process.env.API_ENDPOINT}`, { cache: 'no-store' })
   return response.json()
 }
-
-export const dynamic = 'force-dynamic'
 
 export default async function Post() {
   const data = await getData()
