@@ -17,8 +17,7 @@ resource "aws_ecs_task_definition" "echo" {
     cpu_architecture        = "X86_64"
   }
 
-  container_definitions = templatefile("./ecs_echo_task_definition.json", {
-    name           = "echo"
+  container_definitions = jsonencode(jsondecode(templatefile("./ecs_echo_task_definition.json", {
     image          = "${aws_ecr_repository.echo.repository_url}:v1"
     db_user        = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::"
     db_password    = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::"
@@ -26,7 +25,7 @@ resource "aws_ecs_task_definition" "echo" {
     db_port        = "3306"
     db_name        = aws_db_instance.main.db_name
     log_group_name = aws_cloudwatch_log_group.echo.name
-  })
+  })).containerDefinitions)
 
   #  container_definitions = jsonencode([
   #    {

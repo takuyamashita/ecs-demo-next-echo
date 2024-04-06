@@ -1,31 +1,33 @@
-[
-    {
-        "name": "${name}",
-        "image": "${image}",
-        "essential": true,
-        "environment": [
-            {
-                "name": "API_ENDPOINT",
-                "value": "${api_endpoint}"
-            }
-        ],
-        "portMappings": [
-            {
-                "name": "http",
-                "protocol": "tcp",
-                "appProtocol": "http",
-                "containerPort": 3000,
-                "hostPort": 3000
-            }
-        ],
-        "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-                "awslogs-create-group": "true",
-                "awslogs-group": "${log_group_name}",
-                "awslogs-region": "ap-northeast-1",
-                "awslogs-stream-prefix": "ecs"
+{
+    "containerDefinitions": [
+        {
+            "name": "next",
+            "image": "${image}",
+            "essential": true,
+            "environment": [
+                {
+                    "name": "API_ENDPOINT",
+                    "value": "${api_endpoint}"
+                }
+            ],
+            "portMappings": [
+                {
+                    "name": "http",
+                    "protocol": "tcp",
+                    "appProtocol": "http",
+                    "containerPort": 3000,
+                    "hostPort": 3000
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "${log_group_name}",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
             }
         }
-    }
-]
+    ]
+}

@@ -17,12 +17,11 @@ resource "aws_ecs_task_definition" "next" {
     cpu_architecture        = "X86_64"
   }
 
-  container_definitions = templatefile("./ecs_next_task_definition.json", {
-    name           = "next"
+  container_definitions = jsonencode(jsondecode(templatefile("./ecs_next_task_definition.json", {
     image          = "${aws_ecr_repository.next.repository_url}:v1"
     api_endpoint   = "http://${aws_lb.alb_echo.dns_name}:80"
     log_group_name = aws_cloudwatch_log_group.next.name
-  })
+  })).containerDefinitions)
 
   #  container_definitions = jsonencode([
   #    {
