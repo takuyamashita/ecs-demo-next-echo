@@ -71,7 +71,7 @@ resource "aws_ssm_parameter" "next_task_role_arn" {
 }
 
 resource "aws_ssm_parameter" "echo_task_execution_role_arn" {
-  name  = "/echo/task_execution_role_arn"
+  name  = "/echo/execution_role_arn"
   type  = "String"
   value = aws_iam_role.ecs_echo_task_execution.arn
 }

@@ -61,6 +61,14 @@ jobs:
         run: |
           echo "API_ENDPOINT=$(aws ssm get-parameter --name /echo/api_endpoint --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
           echo "LOG_GROUP_NAME=$(aws ssm get-parameter --name /next/log_group_name --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "execution_role_arn=$(aws ssm get-parameter --name /next/execution_role_arn --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+          echo "task_role_arn=$(aws ssm get-parameter --name /next/task_role_arn --query 'Parameter.Value' --output text)" >> $GITHUB_OUTPUT
+      
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        run: |
+          sed -i \
+              -e 's/${execution_role_arn}/${{ env.execution_role_arn }}/g' \
+              -e 's/${task_role_arn}/${{ env.task_role_arn }}/g'
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
