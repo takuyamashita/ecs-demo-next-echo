@@ -17,25 +17,9 @@ resource "aws_appautoscaling_policy" "next" {
 
     target_value = 70
 
-    customized_metric_specification {
-
-      metrics {
-        id          = "cpu"
-        return_data = true
-        metric_stat {
-          metric {
-            namespace   = "AWS/ECS"
-            metric_name = "CPUUtilization"
-            dimensions {
-              name  = "ServiceName"
-              value = aws_ecs_service.next.name
-            }
-          }
-          stat = "Average"
-        }
-      }
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
-
   }
 
 }
@@ -51,26 +35,9 @@ resource "aws_appautoscaling_policy" "next_memory" {
 
     target_value = 70
 
-    customized_metric_specification {
-
-      metrics {
-        id          = "memory"
-        return_data = true
-        metric_stat {
-          metric {
-            namespace   = "AWS/ECS"
-            metric_name = "MemoryUtilization"
-            dimensions {
-              name  = "ServiceName"
-              value = aws_ecs_service.next.name
-            }
-          }
-          stat = "Average"
-        }
-      }
-
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
     }
-
   }
 
 }
