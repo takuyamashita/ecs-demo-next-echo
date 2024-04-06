@@ -3,8 +3,8 @@
     "networkMode": "awsvpc",
     "cpu": "512",
     "memory": "1024",
-    "executionRoleArn": "arn:aws:iam::949545720247:role/ecs-next-task-execution-20240406054838277300000003",
-    "taskRoleArn": "arn:aws:iam::949545720247:role/next-20240406054838277500000005",
+    "executionRoleArn": "${execution_role_arn}",
+    "taskRoleArn": "${task_role_arn}",
     "requiresCompatibilities": [
         "FARGATE"
     ],

@@ -58,3 +58,27 @@ resource "aws_ssm_parameter" "next_log_group_name" {
   value = aws_cloudwatch_log_group.next.name
 }
 
+resource "aws_ssm_parameter" "next_task_execution_role_arn" {
+  name  = "/next/task_execution_role_arn"
+  type  = "String"
+  value = aws_iam_role.ecs_next_task_execution.arn
+}
+
+resource "aws_ssm_parameter" "next_task_role_arn" {
+  name  = "/next/task_role_arn"
+  type  = "String"
+  value = aws_iam_role.next.arn
+}
+
+resource "aws_ssm_parameter" "echo_task_execution_role_arn" {
+  name  = "/echo/task_execution_role_arn"
+  type  = "String"
+  value = aws_iam_role.ecs_echo_task_execution.arn
+}
+
+resource "aws_ssm_parameter" "echo_task_role_arn" {
+  name  = "/echo/task_role_arn"
+  type  = "String"
+  value = aws_iam_role.echo.arn
+}
+

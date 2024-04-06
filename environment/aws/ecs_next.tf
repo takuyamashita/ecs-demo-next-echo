@@ -21,6 +21,8 @@ resource "aws_ecs_task_definition" "next" {
     image          = "${aws_ecr_repository.next.repository_url}:v1"
     api_endpoint   = "http://${aws_lb.alb_echo.dns_name}:80"
     log_group_name = aws_cloudwatch_log_group.next.name
+    execution_role_arn = aws_iam_role.ecs_next_task_execution.arn
+    task_role_arn      = aws_iam_role.next.arn
   })).containerDefinitions)
 
   #  container_definitions = jsonencode([
