@@ -59,7 +59,7 @@ jobs:
       - name: environment value from ssm parameter store
         id: get-ssm-parameter
         run: |
-          echo "::set-output name=API_ENDPOINT::$(aws ssm get-parameter --name /echo/api-endpoint --query 'Parameter.Value' --output text)"
+          echo "API_ENDPOINT=$(aws ssm get-parameter --name /echo/api-endpoint --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -69,10 +69,7 @@ jobs:
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
           environment-variables: |
-            {
-              "name": "API_ENDPOINT",
-              "value": ${{ secrets.API_ENDPOINT }}
-            } 
+            API_ENDPOINT=${{ steps.get-ssm-parameter.outputs.API_ENDPOINT }}
       
       - run: echo ${{ steps.task-def.outputs.task-definition }}
 
