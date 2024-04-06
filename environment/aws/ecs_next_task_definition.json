@@ -28,7 +28,9 @@
                     "awslogs-region": "ap-northeast-1",
                     "awslogs-stream-prefix": "ecs"
                 }
-            }
+            },
+            "cpu": "512",
+            "memory": "1024"
         }
     ]
 }
