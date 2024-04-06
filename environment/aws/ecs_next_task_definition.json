@@ -29,8 +29,8 @@
                     "awslogs-stream-prefix": "ecs"
                 }
             },
-            "cpu": "512",
-            "memory": "1024"
+            "cpu": 512,
+            "memory": 1024
         }
     ]
 }
