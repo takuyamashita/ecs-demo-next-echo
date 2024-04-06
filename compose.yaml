@@ -56,3 +56,12 @@ services:
     tty: true
     stdin_open: true
     entrypoint: /bin/sh
+  
+  k6:
+    image: grafana/k6
+    volumes:
+      - ./environment/k6:/app
+    tty: true
+    entrypoint: /bin/sh
+    user: root
+    working_dir: /app

@@ -15,7 +15,7 @@ resource "aws_appautoscaling_policy" "next" {
 
   target_tracking_scaling_policy_configuration {
 
-    target_value = 70
+    target_value = 60
 
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
@@ -33,7 +33,7 @@ resource "aws_appautoscaling_policy" "next_memory" {
 
   target_tracking_scaling_policy_configuration {
 
-    target_value = 70
+    target_value = 60
 
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageMemoryUtilization"
